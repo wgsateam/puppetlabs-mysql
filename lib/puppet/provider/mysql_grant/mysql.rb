@@ -43,7 +43,8 @@ Puppet::Type.type(:mysql_grant).provide(:mysql, parent: Puppet::Provider::Mysql)
             (priv == 'ALL PRIVILEGES') ? 'ALL' : priv.strip
           end
         end
-        # Same here, but to remove OPTION leaving just GRANT.
+	next if stripped_privileges.length() == 1 && stripped_privileges[0].match(%r{USAGE})
+	# Same here, but to remove OPTION leaving just GRANT.
         options = if rest =~ %r{WITH\sGRANT\sOPTION}
                     ['GRANT']
                   else
